@@ -1,0 +1,123 @@
+###############################################################################
+# Copyright (c) 2009 IBM Corporation and others.
+#
+# This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License 2.0
+# which accompanies this distribution, and is available at
+# https://www.eclipse.org/legal/epl-2.0/
+#
+# SPDX-License-Identifier: EPL-2.0
+#
+# Contributors:
+#     IBM Corporation - initial API and implementation
+###############################################################################
+#
+# MLink ezup Plug-in Resources
+#
+Update.command=Check for Updates
+Update.command.mnemonic=U
+Install.command=Install New Software...
+Install.command.mnemonic=S
+installedSoftwarePage = Installed Software
+installHistoryPage = Installation History
+
+### Test  DB ###
+#com.mysql.cj.jdbc.Driver
+jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://222.121.214.99:3306/testdb?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+jdbc.username=T9nxjp42kN4GKzjhVXKOpQ==
+jdbc.password=rsBhj+vw+47tSuRsV/tuvw==
+
+### Test  DB ###
+#com.mysql.cj.jdbc.Driver
+#jdbc.driver=com.mysql.cj.jdbc.Driver
+#jdbc.url=jdbc:mysql://222.121.214.99:3306/ydincdb?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+#jdbc.username=T9nxjp42kN4GKzjhVXKOpQ==
+#jdbc.password=rsBhj+vw+47tSuRsV/tuvw==
+
+### Real DB ###
+#jdbc.driver=com.mysql.cj.jdbc.Driver
+#jdbc.url=jdbc:mysql://58.229.240.18:3306/ydincdb?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+#jdbc.username=vUuWehfY84j4Y6GGUb/LLw==
+#jdbc.password=8SZzH24LtIUDDdsiyXpOxg==
+
+### Real DB ###
+#jdbc.driver=com.mysql.cj.jdbc.Driver
+#jdbc.url=jdbc:mysql://58.229.240.18:3306/underten?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+#jdbc.username=vUuWehfY84j4Y6GGUb/LLw==
+#jdbc.password=8SZzH24LtIUDDdsiyXpOxg==
+
+### Real DB ###
+#jdbc.driver=com.mysql.cj.jdbc.Driver
+#jdbc.url=jdbc:mysql://58.229.240.18:3306/skytea?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+#jdbc.username=vUuWehfY84j4Y6GGUb/LLw==
+#jdbc.password=8SZzH24LtIUDDdsiyXpOxg==
+
+
+### ftp web Info ####
+ftp.host=58.229.240.18
+ftp.port=22
+ftp.webpath=/var/www/html/web/xmldir
+ftp.imagepath=/var/www/html/web/
+ftp.username=T9nxjp42kN4GKzjhVXKOpQ==
+ftp.password=zGLmQGxzbf7GgLRIwjuriw==
+
+### Sabang Info ####
+sabang.orderTemplatePath=/YDwmsData/03.SabangNet/template
+sabang.orderTempateFile=GetOrderList.xml
+
+sabang.productTemplatePath=/YDwmsData/03.SabangNet/template
+sabang.productTempateFile=SendProductList.xml
+
+sabang.claimTemplatePath=/YDwmsData/03.SabangNet/template
+sabang.claimTempateFile=GetClaimList.xml
+
+sabang.questionTemplatePath=/YDwmsData/03.SabangNet/template
+sabang.questionTempateFile=SendQuestionList.xml
+
+sabang.pickupExpressSabangNetTemplatePath=/YDwmsData/03.SabangNet/template
+sabang.pickupExpressSabangNetTempateFile=SendPickupExpressListSabangNet.xml
+
+11st.productListTemplatePath=/YDwmsData/03.SabangNet/template
+11st.productListTempateFile=SendProductList11st.xml
+
+11st.productSearchTemplatePath=/YDwmsData/03.SabangNet/template
+11st.productSearchTempateFile=SendShoppingMallSearchProduct.xml
+
+#sabang.pickupExpressTemplatePath=/YDwmsData/03.SabangNet/template
+#sabang.pickupExpressTempateFile=SendPickupExpressListSabangNet.xml
+
+### Files ##
+#image.productPath=/YDwmsData/03.SabangNet/
+image.productPath=/YDwmsData/03.SabangNet/
+image.productFile=image.html
+
+#pickup.expPath=/YDwmsData/02.ExpressList
+pickup.expPath=/YDwmsData/02.ExpressList
+
+#pickup.rackTempatePath=/YDwmsData/01.RackPickupList/template
+pickup.rackTempatePath=/YDwmsData/01.RackPickupList/template
+pickup.rackTempateFile=SW_RACK_MAP.xlsx
+
+#pickup.rackPath=/YDwmsData/01.RackPickupList
+pickup.rackPath=/YDwmsData/01.RackPickupList
+
+#wareh.insuTempatePath=/YDwmsData/04.WarehouseList/template
+wareh.insuTempatePath=/YDwmsData/04.WarehouseList/template
+wareh.insuTempateFile=\uc778\uc218\uc99d.xlsx
+wareh.ipgoTempateFile=\uc785\uace0\uc9c0\uc2dc\uc11c.xlsx
+
+#wareh.salePath=/YDwmsData/04.WarehouseList
+wareh.salePath=/YDwmsData/04.WarehouseList
+
+#claim.listTempatePath=/YDwmsData/05.ClaimList/template
+claim.listTempatePath=/YDwmsData/05.ClaimList/template
+claim.listTempateFile=\uc0c1\ub2f4\ud300\uc591\uc2dd.xlsx
+
+#image Path
+Product.image.productImage = \\YDwmsData\\06.Image\\Thumb1
+Product.image.productImage2 = \\YDwmsData\\06.Image\\Thumb2
+Product.image.shopImage = \\YDwmsData\\06.Image\\ShopImage
+
+#DOMESIN  YD_LOGIN_TYPE= 0;  ,   DOMESIN_LOGIN_TYPE= 1;
+User.LoginType = 0 

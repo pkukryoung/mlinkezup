@@ -1,0 +1,20 @@
+source.. = src/
+output.. = bin/
+bin.includes = plugin.xml,\
+               META-INF/,\
+               .,\
+               icons/,\
+               product_lg.gif,\
+               splash.bmp,\
+               plugin.properties,\
+               plugin_customization.ini,\
+               build.properties,\
+               bin/,\
+               content/,\
+               introContent.xml,\
+               lib/,\
+               nl/,\
+               p2.inf,\
+               about.ini,\
+               about.mappings,\
+               about.properties

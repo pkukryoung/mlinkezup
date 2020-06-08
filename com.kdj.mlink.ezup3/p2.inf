@@ -1,0 +1,13 @@
+#instructions.configure=\
+#  addRepository(type:0,location:http${#58}//www.eclipse.org/equinox/p2/testing/updateSite);\
+#  addRepository(type:1,location:http${#58}//www.eclipse.org/equinox/p2/testing/updateSite);
+
+## Real 
+#instructions.configure=\
+#  addRepository(type:0,location:http${#58}//itsm.kdjsystem.com/mlink/repository);\
+#  addRepository(type:1,location:http${#58}//itsm.kdjsystem.com/mlink/repository);
+
+## Dev
+instructions.configure=\
+  addRepository(type:0,location:http${#58}//itsm.kdjsystem.com/mlink/sns/repository);\
+  addRepository(type:1,location:http${#58}//itsm.kdjsystem.com/mlink/sns/repository);
