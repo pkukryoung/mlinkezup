@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ASCII"?>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_EOT20KGDEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.application">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_OQiwwKGDEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.trimmedwindow" label="Ezup22" x="100" y="100" width="800" height="1024">
+    <children xsi:type="basic:PartSashContainer" xmi:id="_8TUgwKGDEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.partsashcontainer.main" horizontal="true">
+      <children xsi:type="basic:PartStack" xmi:id="_PhGkQKGEEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.partstack.0">
+        <children xsi:type="basic:Part" xmi:id="_sVlcQKGEEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.parts.ezup22overview" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.parts.Ezup22OverviewPart" label="Overview">
+          <toolbar xmi:id="_ssHMcKGxEeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.toolbar.1">
+            <children xsi:type="menu:HandledToolItem" xmi:id="_vTHq8KGxEeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.handledtoolitem.text" label="Text"/>
+          </toolbar>
+        </children>
+      </children>
+      <children xsi:type="basic:PartSashContainer" xmi:id="_LYl2wKGEEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.partsashcontainer.0">
+        <children xsi:type="basic:PartStack" xmi:id="_NCVbwKGEEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.partstack.1" accessibilityPhrase="Details">
+          <children xsi:type="basic:Part" xmi:id="_tN91wKGEEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.parts.ezup22details" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.parts.Ezup22DetailPart" label="Details">
+            <menus xsi:type="menu:PopupMenu" xmi:id="_TpYiEKGhEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.popupmenu.table" label="Table Menu">
+              <children xsi:type="menu:HandledMenuItem" xmi:id="_Z1rFMKGhEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handledmenuitem.remove" label="Remove" command="_VAcYcKGdEeqWwZG50r8r9w"/>
+            </menus>
+          </children>
+        </children>
+        <children xsi:type="basic:PartStack" xmi:id="_NqFYQKGEEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.partstack.3">
+          <children xsi:type="basic:Part" xmi:id="_txDUsKGEEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.parts.playground" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.parts.PlaygroudPart" label="Playground"/>
+        </children>
+      </children>
+    </children>
+    <mainMenu xmi:id="_70D9oKGeEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.menu.0">
+      <children xsi:type="menu:Menu" xmi:id="_Wlh1AKGfEeqWwZG50r8r9w" elementId="org.eclipse.ui.file.menu" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_mFuMcKGfEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handledmenuitem.save" label="Save" command="_KSV3AKGdEeqWwZG50r8r9w"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_yG7UgKGfEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.menuseparator.0"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_2X-S8KGfEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handledmenuitem.exit" label="Exit" command="_PaZV8KGdEeqWwZG50r8r9w"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_XGP8cKGfEeqWwZG50r8r9w" elementId="com.example.e4.rcp.todo.menu.edit" label="Edit">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6gfAcKGfEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handledmenuitem.newezup22" label="New ezup22" command="_R5Fl8KGdEeqWwZG50r8r9w"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_698YgKGfEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handledmenuitem.removeezup22" label="Remove ezup22" command="_VAcYcKGdEeqWwZG50r8r9w"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_DhML8KGgEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handledmenuitem.test" label="Test" command="_Y8D5cKGdEeqWwZG50r8r9w"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_1EByQKG0Eeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.menu.window" label="Window">
+        <children xsi:type="menu:Menu" xmi:id="_6leBkKG0Eeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.menu.showview" label="Showview">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_jcabsKH-EeqVZqunaWgLew" elementId="com.kdj.mlink.ezup22.handledmenuitem.1"/>
+        </children>
+        <children xsi:type="menu:Menu" xmi:id="_9wB5EKG0Eeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.menu.switchperspective" label="Switch Perspective">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_mccMQKIAEeqVZqunaWgLew" elementId="com.kdj.mlink.ezup22.handledmenuitem.todo" label="Todo">
+            <parameters xmi:id="_rRzYsKIAEeqVZqunaWgLew" elementId="com.kdj.mlink.ezup22.parameter.perspective" name="perspective_parameter" value="com.kdj.mlink.ezup22.handlers.PerspectiveSwitchHandler"/>
+          </children>
+        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_sRZYAKIBEeqVZqunaWgLew" elementId="com.kdj.mlink.ezup22.handledmenuitem.test2" label="Test2" command="_Y8D5cKGdEeqWwZG50r8r9w">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_yDDNkKIBEeqVZqunaWgLew" coreExpressionId="com.kdj.mlink.ezup22.selectionset"/>
+        </children>
+      </children>
+    </mainMenu>
+    <trimBars xmi:id="_osHxgKGgEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.trimbar.top">
+      <children xsi:type="menu:ToolBar" xmi:id="_tO4LAKGgEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.toolbar.0">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_vP-gEKGgEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handledtoolitem.save" label="Save" command="_KSV3AKGdEeqWwZG50r8r9w"/>
+        <children xsi:type="menu:ToolControl" xmi:id="_kf5jgKGyEeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.toolcontrol.search" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.parts.SearchToolItem"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_W2mm0KGzEeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.handledtoolitem.testdropdown" label="TestDropDown">
+          <menu xmi:id="_aoYPUKGzEeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.menu.1">
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_uZ55EKGzEeq9BfUgwpcEnw" elementId="com.kdj.mlink.ezup22.handledmenuitem.0"/>
+          </menu>
+        </children>
+      </children>
+    </trimBars>
+  </children>
+  <handlers xmi:id="_RNNh8KGeEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handler.saveall" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.handlers.SaveAllHandler" command="_KSV3AKGdEeqWwZG50r8r9w"/>
+  <handlers xmi:id="_Z3B3cKGeEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handler.exit" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.handlers.ExitHandler" command="_PaZV8KGdEeqWwZG50r8r9w"/>
+  <handlers xmi:id="_aRgM8KGeEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handler.new" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.handlers.NewTodoHandler" command="_R5Fl8KGdEeqWwZG50r8r9w"/>
+  <handlers xmi:id="_aqSgYKGeEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handler.remove" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.handlers.RemoveTodoHandler" command="_VAcYcKGdEeqWwZG50r8r9w"/>
+  <handlers xmi:id="_beaE8KGeEeqWwZG50r8r9w" elementId="com.kdj.mlink.ezup22.handler.test" contributionURI="bundleclass://com.kdj.mlink.ezup22/com.kdj.mlink.ezup22.handlers.TestHandler" command="_Y8D5cKGdEeqWwZG50r8r9w"/>
+  <commands xmi:id="_KSV3AKGdEeqWwZG50r8r9w" elementId="org.eclipse.ui.file.saveAll" commandName="Save"/>
+  <commands xmi:id="_PaZV8KGdEeqWwZG50r8r9w" elementId="org.eclipse.ui.file.exit" commandName="Exit"/>
+  <commands xmi:id="_R5Fl8KGdEeqWwZG50r8r9w" elementId="com.example.e4.rcp.todo.command.new" commandName="New Ezup22"/>
+  <commands xmi:id="_VAcYcKGdEeqWwZG50r8r9w" elementId="com.example.e4.rcp.todo.command.remove" commandName="Remove Ezup22"/>
+  <commands xmi:id="_Y8D5cKGdEeqWwZG50r8r9w" elementId="com.example.e4.rcp.todo.command.test" commandName="For testing">
+    <parameters xmi:id="_KtqpoKG0Eeq9BfUgwpcEnw" elementId="perspective_parameter" name="perspective" optional="false"/>
+  </commands>
+  <addons xmi:id="_EOT20aGDEeqWwZG50r8r9w" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
+  <addons xmi:id="_EOT20qGDEeqWwZG50r8r9w" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
+  <addons xmi:id="_EOT206GDEeqWwZG50r8r9w" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
+  <addons xmi:id="_EOT21KGDEeqWwZG50r8r9w" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
+  <addons xmi:id="_EOT21aGDEeqWwZG50r8r9w" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
+  <addons xmi:id="_EOT21qGDEeqWwZG50r8r9w" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+  <addons xmi:id="_EOT216GDEeqWwZG50r8r9w" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+</application:Application>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            name="ezup22"
+            application="org.eclipse.e4.ui.workbench.swt.E4Application">
+         <property
+               name="appName"
+               value="ezup22">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="com.kdj.mlink.ezup22.selectionset">
+            <with variable="org.eclipse.ui.selection">
+		        <iterate ifEmpty="false" operator="or">
+		          <instanceof value="com.com.kdj.mlink.ezup22.model.Todo">
+		          </instanceof>
+		        </iterate>
+		    </with> 
+      </definition>
+   </extension>
+
+</plugin>
