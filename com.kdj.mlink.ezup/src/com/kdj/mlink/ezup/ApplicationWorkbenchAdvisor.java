@@ -16,9 +16,9 @@ import com.kdj.mlink.ezup.ui.DialogProgressProvider;
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 //	private static final String PERSPECTIVE_ID = "com.kdj.mlink.ezup.perspective.ID"; //$NON-NLS-1$ 
-	private static final String PERSPECTIVE_ID = "com.kdj.mlink.ezup.perspectiveDebug.ID"; //$NON-NLS-1$ 
+//	private static final String PERSPECTIVE_ID = "com.kdj.mlink.ezup.perspectiveDebug.ID"; //$NON-NLS-1$ 
 //	private static final String PERSPECTIVE_ID = "com.kdj.mlink.ezup.perspectiveFreeMoving.ID"; //$NON-NLS-1$ 
-//	private static final String PERSPECTIVE_ID = "com.kdj.mlink.ezup.concurrency.view.JobDemoPerspective.ID"; //$NON-NLS-1$ 
+	private static final String PERSPECTIVE_ID = "com.kdj.mlink.ezup.concurrency.view.JobDemoPerspective.ID"; //$NON-NLS-1$ 
 
 	@Override
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {

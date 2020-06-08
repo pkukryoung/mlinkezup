@@ -158,5 +158,16 @@
             label="DebugConsole">
       </consoleFactory>
    </extension>
+   
+   <extension
+      point="org.eclipse.ui.views">
+   <view
+         name="Progress View"
+         icon="icons/pview.png"
+         category="org.eclipse.ui"
+         class="org.eclipse.ui.ExtensionFactory:progressView"
+         id="org.eclipse.ui.views.ProgressView">
+   </view>
+   </extension>
       
 </plugin>

@@ -203,7 +203,10 @@ public class ProgressAction extends Action {
 						if (monitor.isCanceled()) { 
 							return Status.CANCEL_STATUS; 
 						} 
-						try { Thread.sleep(1000); } catch (Exception e) { } 
+						try { Thread.sleep(1000); 
+						} catch (Exception e) { 
+							
+						} 
 						Display.getDefault().asyncExec(new Runnable() { 
 							public void run() { 
 								System.out.println("ÀÛ¾÷Áß");
