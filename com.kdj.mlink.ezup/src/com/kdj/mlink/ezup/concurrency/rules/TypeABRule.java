@@ -1,0 +1,62 @@
+package com.kdj.mlink.ezup.concurrency.rules;
+
+/*
+ * "The Java Developer's Guide to Eclipse"
+ *   by D'Anjou, Fairbrother, Kehn, Kellerman, McCarthy
+ * 
+ * (C) Copyright International Business Machines Corporation, 2003, 2004. 
+ * All Rights Reserved.
+ * 
+ * Code or samples provided herein are provided without warranty of any kind.
+ */
+
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+
+import com.kdj.mlink.ezup.concurrency.TraceUtility;
+
+/**
+ * This rule contains itself and only conflicts with the general
+ * <code>TypeRule</code> rule (universal receiver).
+ * 
+ */
+public class TypeABRule implements ISchedulingRule {
+
+   /**
+    *  
+    */
+   public TypeABRule() {
+      super();
+   }
+
+   /*
+    * (non-Javadoc)
+    * 
+    * @see org.eclipse.core.runtime.jobs.ISchedulingRule#contains(org.eclipse.core.runtime.jobs.ISchedulingRule)
+    */
+   public boolean contains(ISchedulingRule rule) {
+      TraceUtility.traceMsg(TraceUtility.RULE, "in " + this + "contains", " sent " + rule);
+      if (this == rule)
+         return true;
+      
+      if (rule instanceof TypeABRule)
+         return true;
+      else
+         return false;
+   }
+
+   /*
+    * (non-Javadoc)
+    * 
+    * @see org.eclipse.core.runtime.jobs.ISchedulingRule#isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule)
+    */
+   public boolean isConflicting(ISchedulingRule rule) {
+      // JDG2E: 4B_ Type AB rule conflicts with nothing but the base Type Rule.
+      TraceUtility.traceMsg(TraceUtility.RULE, "in " + this + "isConflicting", " sent " + rule);
+      // FIXED must also conflict with itself
+      if (rule instanceof TypeRule || rule == this)
+         return true;
+      else
+         return false;
+   }
+
+}

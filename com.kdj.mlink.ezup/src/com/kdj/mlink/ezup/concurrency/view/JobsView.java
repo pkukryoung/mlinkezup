@@ -1,0 +1,1327 @@
+package com.kdj.mlink.ezup.concurrency.view;
+
+/*
+ * "The Java Developer's Guide to Eclipse"
+ *   by D'Anjou, Fairbrother, Kehn, Kellerman, McCarthy
+ * 
+ * (C) Copyright International Business Machines Corporation, 2003, 2004. 
+ * All Rights Reserved.
+ * 
+ * Code or samples provided herein are provided without warranty of any kind.
+ */
+
+import java.net.URL;
+
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
+import org.eclipse.core.runtime.jobs.ILock;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.IProgressConstants;
+import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
+import org.eclipse.ui.progress.UIJob;
+
+import com.kdj.mlink.ezup.concurrency.ConcurrencyPlugin;
+import com.kdj.mlink.ezup.concurrency.TraceUtility;
+import com.kdj.mlink.ezup.concurrency.jobs.CustomJob;
+import com.kdj.mlink.ezup.concurrency.jobs.CustomJobListener;
+import com.kdj.mlink.ezup.concurrency.jobs.CustomUIJob;
+import com.kdj.mlink.ezup.concurrency.rules.TypeABRule;
+import com.kdj.mlink.ezup.concurrency.rules.TypeARule;
+import com.kdj.mlink.ezup.concurrency.rules.TypeBRule;
+import com.kdj.mlink.ezup.concurrency.rules.TypeORule;
+import com.kdj.mlink.ezup.concurrency.rules.TypeRule;
+
+/**
+ * This sample view demonstrates how to exercise many of the functions
+ * provided in <code>org.eclipse.core.runtime.jobs</code>. The view
+ * contains UI components that can be used to configure, create, and then run
+ * jobs.
+ * <p>
+ * A demonstration guide that will help you run all the possible job
+ * processing actions is provided in a readme.txt file in the project
+ * directory.
+ * <p>
+ */
+public class JobsView extends ViewPart implements ISelectionListener {
+
+  private List feedbackList;
+
+  // Basic Job control options
+  private Button addJobListener;
+
+  private Button uiJob;
+
+  private Button waitJob;
+
+  private Button selfStartJob;
+
+  private Button usePostJobAction;
+
+  private Button sleepJob;
+
+  private Job sleepingJob = null;
+
+  private Combo statusValue;
+
+  private int statusResult = IStatus.OK;
+
+  private Combo delayValue;
+
+  private int delayTime = 0;
+
+  private Scale jobPriority;
+
+  // Basic Job control buttons
+  private Button rescheduleJob;
+
+  private Button wakeJob;
+
+  private Button cancelJob;
+
+  private Job lastJob = null;
+
+  private IJobChangeListener cancelJobListener = new CancelJobListener();
+
+  // User Interaction options
+  private Button systemJob;
+
+  private Button failJob;
+
+  private Button workbenchDialogJob;
+
+  private Button userJob;
+
+  private Button workbenchPartJob;
+
+  private Button useCustomImage = null;
+
+  private Combo keepValue;
+
+  private QualifiedName keepNone = new QualifiedName("no", "keep");
+
+  private QualifiedName keepResult = keepNone;
+
+  // JDG2E: 2D1 Create progress groups
+  private IProgressMonitor progressGroupA;
+
+  private IProgressMonitor progressGroupB;
+
+  private Button noPM;
+
+  private Button pmA;
+
+  private Button pmB;
+
+  // Managing Job contention options
+
+  private Button noLock;
+
+  private String lockRequest;
+
+  private Button useLockA;
+
+  private Button useLockB;
+
+  // JDG2E: 5A1 Locks created
+  private ILock lockA = Platform.getJobManager().newLock();
+
+  private ILock lockB = Platform.getJobManager().newLock();
+
+  private Button noRule;
+
+  private Button workspaceRule;
+
+  private Button selectedResourceRule;
+
+  private String ruleRequest;
+
+  private Label currentRule;
+
+  private Button limitedRule;
+
+  private IResource selectedResource;
+
+  private Button typeRule;
+
+  private Button typeABRule;
+
+  private Button typeARule;
+
+  private Button typeBRule;
+
+  private Button typeORule;
+
+  //FIXED Removed as they are created on the fly now.
+  
+//  private ISchedulingRule aTypeRule = new TypeRule();
+//
+//  private ISchedulingRule aTypeABRule = new TypeABRule();
+//
+//  private ISchedulingRule aTypeARule = new TypeARule();
+//
+//  private ISchedulingRule aTypeBRule = new TypeBRule();
+//
+//  private ISchedulingRule aTypeORule = new TypeORule();
+
+  /**
+   * The constructor.
+   */
+  public JobsView() {
+
+  }
+
+  /**
+   * Creates the UI for the job demo view. There are several tabs used to organize
+   * the UI content relative to the API function being demonstrated.
+   * 
+   * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+   */
+  public void createPartControl(Composite parent) {
+
+    Composite first = new Composite(parent, SWT.NONE);
+    GridLayout gridLayout = new GridLayout();
+    gridLayout.numColumns = 4;
+    first.setLayout(gridLayout);
+    GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    first.setLayoutData(data);
+
+//    FIXED - removed deprecation
+//    WorkbenchHelp.setHelp(first, "com.ibm.jdg2e.concurrency.jobViewId");
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(first, "com.ibm.jdg2e.concurrency.jobViewId");
+    
+    
+    TabFolder tabFolder = new TabFolder(first, SWT.NULL);
+    data.verticalSpan = 1;
+    data.horizontalSpan = 6;
+    tabFolder.setLayoutData(data);
+
+    // Basic job tab
+    TabItem basicTab = new TabItem(tabFolder, SWT.NULL);
+    basicTab.setText("Job Basics");
+    basicTab.setControl(createTabBasics(tabFolder));
+
+    // UI Interaction tab
+    TabItem UITab = new TabItem(tabFolder, SWT.NULL);
+    UITab.setText("User Interaction");
+    UITab.setControl(createTabUIInteract(tabFolder));
+
+    // Contention tab
+    TabItem advancedTab = new TabItem(tabFolder, SWT.NULL);
+    advancedTab.setText("Managing Job Contention");
+    advancedTab.setControl(createTabContention(tabFolder));
+
+    // Buttons
+
+    Button jobButton = createPushButton(first, 1,
+        "                Run Specified Job                ");
+    jobButton.addSelectionListener(new SelectionAdapter() {
+
+      public void widgetSelected(SelectionEvent e) {
+        runJob();
+      }
+    });
+
+    rescheduleJob = createPushButton(first, 1, "Reschedule Last Job");
+    rescheduleJob.setEnabled(false);
+    rescheduleJob.addSelectionListener(new SelectionAdapter() {
+
+      // JDG2E: 1D1 Use .schedule to reschedule an existing Job
+      public void widgetSelected(SelectionEvent e) {
+        if (lastJob != null) {
+          lastJob.schedule();
+          rescheduleJob.setEnabled(false);
+        }
+      }
+    });
+
+    cancelJob = createPushButton(first, 1, "Cancel Last Job");
+    cancelJob.setEnabled(false);
+    cancelJob.addSelectionListener(new SelectionAdapter() {
+
+      // JDG2E: 1E1 Use .cancel to cancel an existing Job
+      public void widgetSelected(SelectionEvent e) {
+
+        if (lastJob != null) {
+          cancelJob.setEnabled(false);
+          if (lastJob.cancel())
+            MessageDialog.openInformation(getSite().getShell(),
+                "Job Cancel Request", "Job " + lastJob.getName()
+                    + " was canceled before it started");
+          else {
+            // JDG2E: 1E2 Use .join to validate cancel request
+            try {
+              lastJob.join();
+            } catch (InterruptedException e1) {
+            } finally {
+              if (lastJob != null)
+                if (lastJob.getResult().getCode() == Status.CANCEL)
+                  MessageDialog.openInformation(getSite().getShell(),
+                      "Job Cancel Request", "Job " + lastJob.getName()
+                          + " was canceled.");
+                else
+                  MessageDialog.openInformation(getSite().getShell(),
+                      "Job Cancel Request", "Unable to cancel Job "
+                          + lastJob.getName()
+                          + lastJob.getResult().getCode());
+
+              lastJob = null;
+            }
+          }
+        }
+      }
+    });
+
+    wakeJob = createPushButton(first, 1, "Wake Sleeping Job");
+
+    wakeJob.setEnabled(false);
+    wakeJob.addSelectionListener(new SelectionAdapter() {
+
+      // JDG2E: 1I3 Use .wakeUp to wake a sleeping job
+      public void widgetSelected(SelectionEvent e) {
+        if (sleepingJob != null) {
+          //               Job temp = sleepingJob;
+          sleepingJob.wakeUp();
+          sleepingJob = null;
+          wakeJob.setEnabled(false);
+        }
+      }
+    });
+
+    // List
+    feedbackList = new List(first, SWT.H_SCROLL | SWT.V_SCROLL
+        | SWT.BORDER);
+    data = new GridData(GridData.FILL_BOTH);
+    data.horizontalSpan = 4;
+    data.verticalSpan = 3;
+    feedbackList.setLayoutData(data);
+
+    // ClearList
+    Button clearList = new Button(first, SWT.PUSH | SWT.FLAT);
+    clearList.setText("Clear List");
+    data = new GridData(GridData.FILL_HORIZONTAL);
+    data.horizontalSpan = 4;
+    clearList.setLayoutData(data);
+    clearList.addSelectionListener(new SelectionAdapter() {
+
+      public void widgetSelected(SelectionEvent e) {
+        feedbackList.removeAll();
+      }
+    });
+  }
+
+  /**
+   * 
+   * Create UI for basic API control 
+   * 
+   * @param parent
+   */
+  private Composite createTabBasics(Composite parent) {
+    Composite composite = new Composite(parent, SWT.NULL);
+    composite.setLayout(new GridLayout());
+    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+    composite.setLayoutData(data);
+    //*
+    Composite tabOne = new Composite(composite, SWT.NULL);
+    GridLayout gridLayout = new GridLayout();
+    gridLayout.numColumns = 3;
+    tabOne.setLayout(gridLayout);
+    data = new GridData(GridData.FILL_HORIZONTAL);
+    tabOne.setLayoutData(data);
+    //*
+    addJobListener = createCheckButton(tabOne, "Add Job Listener");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 1;
+    addJobListener.setLayoutData(data);
+    //*
+    statusValue = new Combo(tabOne, SWT.FLAT);
+
+    statusValue.setItems(new String[] {
+        "OK", "Info", "Warning", "Error"});
+    statusValue.setText("Job Result");
+    statusValue.addSelectionListener(new SelectionAdapter() {
+
+      private int[] stausOptions = new int[] {
+          IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR,
+          IStatus.CANCEL};
+
+      public void widgetSelected(SelectionEvent e) {
+        statusResult = stausOptions[statusValue.getSelectionIndex()];
+
+      }
+    });
+
+    //*
+    createPriorityScaleGroup(tabOne);
+
+    //*
+    uiJob = createCheckButton(tabOne, "Run as a UIJob");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 1;
+    uiJob.setLayoutData(data);
+
+    //*
+    usePostJobAction = createCheckButton(tabOne, "Add Post-Job Action");
+
+    //
+    //    Label sep = new Label(tabOne, SWT.NONE);
+    //    // sep.setText(" ");
+    //    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+    //        | GridData.GRAB_HORIZONTAL);
+    //    data.horizontalSpan = 1;
+    //    data.verticalSpan = 2;
+    //    sep.setLayoutData(data);
+
+    //
+    waitJob = createCheckButton(tabOne,
+        "Wait on Job Completion (ignored for UIJob)");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 1;
+    waitJob.setLayoutData(data);
+
+    //*
+    delayValue = new Combo(tabOne, SWT.FLAT);
+
+    delayValue.setItems(new String[] {
+        "None", "Just a little", "A bit more", "Even Longer"});
+    delayValue.setText("Start Delay");
+    delayValue.addSelectionListener(new SelectionAdapter() {
+
+      public void widgetSelected(SelectionEvent e) {
+        delayTime = 1000 * delayValue.getSelectionIndex()
+            * delayValue.getSelectionIndex();
+        if (delayTime == 0) {
+          sleepJob.setSelection(false);
+          sleepJob.setEnabled(false);
+        } else {
+          sleepJob.setEnabled(true);
+        }
+      }
+    });
+
+    //*
+    selfStartJob = createCheckButton(tabOne,
+        "Self Repeating Job (ignored for UIJob)");
+    selfStartJob.setSelection(false);
+    selfStartJob.setEnabled(true);
+    //*
+    sleepJob = createCheckButton(tabOne, "Sleep");
+    sleepJob.setSelection(false);
+    sleepJob.setEnabled(false);
+
+    return composite;
+  }
+
+  /**
+   * Create Priority control
+   * 
+   * @param tabOne
+   */
+  private void createPriorityScaleGroup(Composite tabOne) {
+    Group buttonComposite = new Group(tabOne, SWT.LEFT);
+    GridLayout layout = new GridLayout();
+    buttonComposite.setLayout(layout);
+
+    GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 4;
+    buttonComposite.setLayoutData(data);
+    buttonComposite.setText("Job Priority");
+
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+    data.horizontalSpan = 1;
+    jobPriority = new Scale(buttonComposite, SWT.NONE);
+    jobPriority.setIncrement(10);
+    jobPriority.setMinimum(10);
+    jobPriority.setMaximum(50);
+    jobPriority.setPageIncrement(10);
+    jobPriority.setSelection(20);
+    jobPriority.setLayoutData(data);
+    final Label jobPriorityValue = new Label(buttonComposite, SWT.WRAP
+        | SWT.BORDER);
+
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    //    data.widthHint=20;
+    jobPriorityValue.setLayoutData(data);
+    jobPriorityValue.setText(getPriorityString(jobPriority
+        .getSelection()));
+    jobPriority.addSelectionListener(new SelectionAdapter() {
+
+      public void widgetSelected(SelectionEvent e) {
+        jobPriorityValue.setText(getPriorityString(jobPriority
+            .getSelection()));
+      }
+    });
+  }
+
+  /**
+   * @return priority value to use for job
+   */
+  private String getPriorityString(int priority) {
+    switch (priority) {
+      case 10 :
+        return "10 - Interactive";
+      case 20 :
+        return "20 - Short";
+      case 30 :
+        return "30 - Long";
+      case 40 :
+        return "40 - Build";
+      case 50 :
+        return "50 - Decorate";
+      default :
+        return "Undefined";
+    }
+  }
+
+  /**
+   * Puts the job in sleep state and allows the UI to be used to wake the job later. 
+   * 
+   * @param job
+   */
+  private void putJobInSleepState(Job job) {
+    // JDG2E: 1I1 Use .sleep to prevent a scheduled job from being started
+    if (job.sleep()) {
+      wakeJob.setEnabled(true);
+    }
+    // JDG2E: 1I2 Wake any previously slept job before we cache the current
+    // job
+    else if (sleepingJob != null) {
+      Job temp = sleepingJob;
+      temp.wakeUp();
+    }
+    sleepingJob = job;
+  }
+
+  /**
+   * Associate the job with the scheduling rule that should be used
+   * 
+   * @param job
+   */
+  private void setupSchedulingRule(Job job) {
+    ISchedulingRule rule = getSchedulingRule();
+
+    // JDG2E: 3A1 Rule assigned to job
+    if (rule != null)
+      job.setRule(rule);
+  }
+
+  /**
+   * @return the scheduling rule that should be used based on UI settings
+   */
+  private ISchedulingRule getSchedulingRule() {
+
+    ISchedulingRule rule = null;
+
+    if (workspaceRule.getSelection())
+      rule = ResourcesPlugin.getWorkspace().getRoot();
+
+    else if (selectedResourceRule.getSelection()) {
+      IResourceRuleFactory fac = ResourcesPlugin.getWorkspace()
+          .getRuleFactory();
+      rule = fac.modifyRule(selectedResource);
+    }
+
+    // FIXED As a rule must also conflict with itself, the required behavior can only be obtained
+    // when a new rule instance is used each time.
+    
+    else if (typeRule.getSelection())
+      rule = new TypeRule();
+
+    else if (typeABRule.getSelection())
+      rule = new TypeABRule();
+
+    else if (typeARule.getSelection())
+      rule = new TypeARule();
+
+    else if (typeBRule.getSelection())
+      rule = new TypeBRule();
+
+    else if (typeORule.getSelection())
+      rule = new TypeORule();
+
+    return rule;
+  }
+
+  /**
+   * Create UI for job API user interaction control  
+   * 
+   * @param parent
+   */
+  private Composite createTabUIInteract(Composite parent) {
+
+    Composite composite = new Composite(parent, SWT.NULL);
+    composite.setLayout(new GridLayout());
+
+    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+    composite.setLayoutData(data);
+
+    Composite tabThree = new Composite(composite, SWT.NULL);
+    GridLayout gridLayout = new GridLayout();
+    gridLayout.numColumns = 3;
+    tabThree.setLayout(gridLayout);
+
+    data = new GridData(GridData.FILL_HORIZONTAL);
+    tabThree.setLayoutData(data);
+
+    systemJob = createCheckButton(tabThree, "Run as System Job");
+
+    userJob = createCheckButton(tabThree, "User Initiated Job");
+
+    createPMGroup(tabThree);
+
+    failJob = createCheckButton(tabThree, "Fail Job");
+
+    workbenchPartJob = createCheckButton(tabThree,
+        "Schedule w/PartService API");
+
+    workbenchDialogJob = createCheckButton(tabThree, "Run Using Dialog");
+
+    keepValue = new Combo(tabThree, SWT.FLAT);
+
+    keepValue.setItems(new String[] {
+        "Keep None", "Keep One", "Keep All"});
+    keepValue.setText("Keep Jobs In View");
+    keepValue.addSelectionListener(new SelectionAdapter() {
+
+      private QualifiedName[] keepOptions = new QualifiedName[] {
+          keepNone, IProgressConstants.KEEPONE_PROPERTY,
+          IProgressConstants.KEEP_PROPERTY};
+
+      public void widgetSelected(SelectionEvent e) {
+        keepResult = keepOptions[keepValue.getSelectionIndex()];
+
+      }
+    });
+
+    useCustomImage = createCheckButton(tabThree, "Use Custom Job Image");
+
+    return composite;
+  }
+
+  /**
+   * Create group with progress monitor control UI
+   * 
+   * @param composite
+   */
+  private void createPMGroup(Composite composite) {
+    Group buttonComposite = new Group(composite, SWT.LEFT);
+    buttonComposite.setText("Choose Shared Progress Monitor");
+
+    GridLayout layout = new GridLayout();
+    layout.numColumns = 1;
+    buttonComposite.setLayout(layout);
+
+    GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 4;
+
+    buttonComposite.setLayoutData(data);
+
+    noPM = createRadioButton(buttonComposite, "None", "noPM");
+    pmA = createRadioButton(buttonComposite, "Monitor A", "pmA");
+    pmB = createRadioButton(buttonComposite, "Monitor B", "pmB");
+    noPM.setSelection(true);
+  }
+
+  /**
+   * Create UI for Job API contention management   
+   * 
+   * @param parent
+   */
+  private Composite createTabContention(Composite parent) {
+
+    Composite composite = new Composite(parent, SWT.NULL);
+    composite.setLayout(new GridLayout());
+    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+    composite.setLayoutData(data);
+
+    Composite tabTwo = new Composite(composite, SWT.NULL);
+    GridLayout gridLayout = new GridLayout();
+    gridLayout.numColumns = 6;
+    tabTwo.setLayout(gridLayout);
+    data = new GridData(GridData.FILL_HORIZONTAL);
+    tabTwo.setLayoutData(data);
+
+    createScheduleRuleGroup(tabTwo);
+    createLockGroup(tabTwo);
+
+    return composite;
+  }
+
+  /**
+   * Create group with scheduling rule control UI
+   * 
+   * @param composite
+   */
+  private void createScheduleRuleGroup(Composite composite) {
+    // Scheduling Rule Group
+    Group buttonComposite = new Group(composite, SWT.LEFT);
+    buttonComposite.setText("Choose Scheduling Rule");
+
+    GridLayout layout = new GridLayout();
+    layout.numColumns = 7;
+    buttonComposite.setLayout(layout);
+
+    GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 4;
+    buttonComposite.setLayoutData(data);
+
+    // No Rule Option
+    noRule = createRadioButton(buttonComposite, "No Rule", "rule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 3;
+    noRule.setLayoutData(data);
+
+    Label sep = new Label(buttonComposite, SWT.SEPARATOR);
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 3;
+    sep.setLayoutData(data);
+
+    // Workspace Rule
+    workspaceRule = createRadioButton(buttonComposite,
+        "Workspace Root Rule ", "rule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    workspaceRule.setLayoutData(data);
+
+    // Workspace Rule but only during a portion of the job (begin/end rule
+    // calls)
+    limitedRule = createRadioButton(buttonComposite,
+        "Limited Use of Rule", "limitedRule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    limitedRule.setLayoutData(data);
+
+    sep = new Label(buttonComposite, SWT.SEPARATOR);
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 3;
+    sep.setLayoutData(data);
+
+    // Custom Rule Set - Global Type
+    typeRule = createRadioButton(buttonComposite, "Type Rule",
+        "typeRule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 2;
+    typeRule.setLayoutData(data);
+
+    // Use IResource selected in Navigator view as the rule
+    selectedResourceRule = createRadioButton(buttonComposite,
+        "Selected Resource Rule", "rule");
+    noRule.setSelection(true);
+    ruleRequest = "No Rule";
+
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.verticalSpan = 2;
+    selectedResourceRule.setLayoutData(data);
+
+    // Label to reflect current IResource selection
+    currentRule = new Label(buttonComposite, SWT.BORDER);
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+    data.verticalSpan = 2;
+    currentRule.setLayoutData(data);
+    currentRule.setText("No current selection   ");
+
+    // Listen for part selection, used in ISchedulingRule logic
+    getSite().getPage().addSelectionListener(
+        "org.eclipse.ui.views.ResourceNavigator", this);
+
+    // Custom Rule Set - AB Type
+    typeABRule = createRadioButton(buttonComposite, "Type AB Rule",
+        "typeABRule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    typeABRule.setLayoutData(data);
+
+    // Custom Rule Set - O Type
+    typeORule = createRadioButton(buttonComposite, "Type O Rule",
+        "typeORule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    typeORule.setLayoutData(data);
+
+    // Custom Rule Set - A Type
+    typeARule = createRadioButton(buttonComposite, "Type A Rule",
+        "typeARule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    typeARule.setLayoutData(data);
+
+    // Custom Rule Set - B Type
+    typeBRule = createRadioButton(buttonComposite, "Type B Rule",
+        "typeBRule");
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = 1;
+    typeBRule.setLayoutData(data);
+
+  }
+
+  /**
+   * Capture selectoin from Navigator view for display and use later as the
+   * jobs scheduling rule.
+   * 
+   * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart,
+   *      org.eclipse.jface.viewers.ISelection)
+   */
+  // JDG2E React to Naviagtor view selection, used in ISchedulingRule logic
+  public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+    if (!currentRule.isDisposed())
+      if (!selection.isEmpty()) {
+        IStructuredSelection ssel = (IStructuredSelection) selection;
+        selectedResource = (IResource) ssel.getFirstElement();
+        currentRule.setText(selectedResource.toString());
+      } else {
+        currentRule.setText(" ");
+      }
+  }
+
+  /**
+   * Create Group with lock object options.
+   * 
+   * @param tabOne
+   */
+  private void createLockGroup(Composite composite) {
+    Group buttonComposite = new Group(composite, SWT.LEFT);
+    buttonComposite.setText("Choose Lock");
+
+    GridLayout layout = new GridLayout();
+    layout.numColumns = 1;
+    buttonComposite.setLayout(layout);
+
+    GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
+    data.horizontalSpan = 1;
+    data.verticalSpan = 4;
+    buttonComposite.setLayoutData(data);
+
+    // Do not use a lock
+    noLock = createRadioButton(buttonComposite, "No Lock", "lock");
+
+    // Use lock A
+    useLockA = createRadioButton(buttonComposite, "Lock A", "lock");
+
+    // Use lock B
+    useLockB = createRadioButton(buttonComposite, "Lock B", "lock");
+
+    noLock.setSelection(true);
+    lockRequest = "No Lock";
+  }
+
+  /**
+   * @return IProgressMonitor - the progress monitor to be used to group jobs
+   *         in progress view
+   */
+  private IProgressMonitor getSharedProgressMonitor() {
+
+    IProgressMonitor pm = null;
+
+    if (pmA.getSelection())
+      return getProgressGroupA();
+
+    else if (pmB.getSelection())
+      return getProgressGroupB();
+
+    return pm;
+  }
+
+  /**
+   * Create progress monitor
+   * 
+   * @return a shared job progress monitor.
+   */
+  private IProgressMonitor getProgressGroupA() {
+    if (progressGroupA == null) {
+      // JDG2E: 2D1 Create and Init progress group
+      progressGroupA = Platform.getJobManager().createProgressGroup();
+      progressGroupA.beginTask("A-Team", 500);
+    }
+    return progressGroupA;
+  }
+
+  /**
+   * Create progress monitor
+   * 
+   * @return a shared job progress monitor.
+   */
+  private IProgressMonitor getProgressGroupB() {
+    if (progressGroupB == null) {
+      // JDG2E: 2D1 Create and Init progress group
+      progressGroupB = Platform.getJobManager().createProgressGroup();
+      progressGroupB.beginTask("B-Team", 500);
+    }
+    return progressGroupB;
+  }
+
+  /**
+   * Utility method to create buttons in UI.
+   * 
+   * @param composite
+   * @param hSpan
+   * @param buttonName
+   * @return Button UI control 
+   */
+  private Button createPushButton(Composite composite, int hSpan,
+      String buttonName) {
+    GridData data;
+    Button jobButton = new Button(composite, SWT.PUSH | SWT.FLAT);
+    jobButton.setText(buttonName);
+
+    data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+        | GridData.GRAB_HORIZONTAL);
+    data.horizontalSpan = hSpan;
+    data.verticalSpan = 1;
+
+    jobButton.setLayoutData(data);
+
+    return jobButton;
+  }
+
+  /**
+   * Utility method that creates a radio button instance and sets the default
+   * layout data.
+   * 
+   * @param parent
+   *          the parent for the new button
+   * @param label
+   *          the label for the new button
+   * @return the newly-created button
+   */
+  private Button createRadioButton(Composite parent,
+      final String label, final String currentValue) {
+
+    Button button = new Button(parent, SWT.RADIO | SWT.LEFT | SWT.FLAT);
+    button.setText(label);
+
+    button.addSelectionListener(new SelectionAdapter() {
+
+      public void widgetSelected(SelectionEvent e) {
+        if (currentValue.equals("rule"))
+          ruleRequest = label;
+        else if (currentValue.equals("lock"))
+          lockRequest = label;
+      }
+    });
+    return button;
+  }
+
+  /**
+   * Utility to create check button in UI.
+   * 
+   * @param composite
+   * @param buttonName
+   * @return new check button instance
+   */
+  private Button createCheckButton(Composite composite,
+      String buttonName) {
+
+    Button button = new Button(composite, SWT.CHECK | SWT.FLAT);
+    button.setText(buttonName);
+
+    GridData data = new GridData(GridData.FILL_BOTH);
+    data.verticalAlignment = GridData.CENTER;
+
+    button.setLayoutData(data);
+
+    return button;
+  }
+
+  /**
+   * Place focus on a specific UI control.
+   */
+  public void setFocus() {
+    addJobListener.setFocus();
+  }
+
+  /**
+   * Clear active listener.
+   * 
+   * @see org.eclipse.ui.IWorkbenchPart#dispose()
+   */
+  public void dispose() {
+    getSite().getPage().removeSelectionListener(
+        "org.eclipse.ui.views.ResourceNavigator", this);
+    Platform.getJobManager().cancel(CustomJob.class);
+  }
+
+  /**
+   * Manages the creation and invocation of a job with the function requested in the UI.
+   */
+  private void runJob() {
+
+    Job job = createJob();
+
+    configureJobBasics(job);
+    configureJobUserInteraction(job);
+    configureJobContention(job);
+
+    scheduleJob(job);
+
+    if (sleepJob.getSelection()) {
+      putJobInSleepState(job);
+    }
+
+    if (lastJob != null)
+      lastJob.removeJobChangeListener(cancelJobListener);
+    lastJob = job;
+    cancelJob.setEnabled(true);
+    rescheduleJob.setEnabled(true);
+    lastJob.addJobChangeListener(cancelJobListener);
+
+    if (!uiJob.getSelection() && waitJob.getSelection())
+      // JDG2E: 1G1 Use .join to wait on Job completion
+      try {
+        TraceUtility.traceMsg(TraceUtility.VIEW, "RunJobAction",
+            "Going to wait on Job");
+        job.join();
+        TraceUtility.traceMsg(TraceUtility.VIEW, "RunJobAction",
+            "Job done");
+      } catch (InterruptedException e) {
+        TraceUtility.traceMsg(TraceUtility.VIEW, "RunJobAction",
+            "Caught an interrupted exception in join " + e);
+      }
+  }
+
+  /**
+   * Creates the type of job requested in the UI (Job or UIJob).
+   * 
+   * @return a job instance
+   */
+  private Job createJob() {
+    Job job;
+    if (uiJob.getSelection()) {
+      // JDG2E: 1F1 Create UIJob
+      //      job = new CustomUIJob("CustomUIJob: " + actualRule + " - "
+      job = new CustomUIJob("CustomUIJob: " + ruleRequest + " - "
+          + lockRequest + "  -- Pri: " + jobPriority.getSelection(),
+          failJob.getSelection());
+
+    } else {
+      // JDG2E: 1A1 Create Job
+      //      job = new CustomJob("CustomJob: " + actualRule + " - " + lockRequest
+      job = new CustomJob("CustomJob: " + ruleRequest + " - "
+          + lockRequest + " -- Pri: " + jobPriority.getSelection(),
+          failJob.getSelection(), statusResult, limitedRule
+              .getSelection());
+
+    }
+    return job;
+
+    //*
+    /**
+     * @return
+     */
+    //          ISchedulingRule rule = getSchedulingRule();
+    //      String actualRule = null;
+    //
+    //      if (rule != null)
+    //        actualRule = ruleRequest + ": " + rule.toString() + " ";
+    //      else
+    //        actualRule = ruleRequest;
+    //
+    //      Job job = createJob(actualRule);
+    //
+    //      // JDG2E: 3A1 Rule assigned to job
+    //      if (rule != null)
+    //        job.setRule(rule);
+    //     
+    //*
+  }
+
+  /**
+   * Schedule job as requested in UI. This could be a schedule, schedule with delay, or 
+   * a schedule request using the <code>IWorkbenchSiteProgressService</code>.
+   * 
+   * @param job
+   */
+  private void scheduleJob(Job job) {
+    if (workbenchPartJob.getSelection()) {
+      // JDG2E: 2C Schedule a Job using IWorkbenchSiteProgressService
+      IWorkbenchSiteProgressService siteps = (IWorkbenchSiteProgressService) getSite()
+          .getAdapter(IWorkbenchSiteProgressService.class);
+
+      siteps.schedule(job, delayTime, true);
+      //         siteps.schedule(job, delayTime);
+    } else if (workbenchDialogJob.getSelection()) {
+      // JDG2E: 2Cx- Schedule Job in Dialog using IWorkbenchSiteProgressService
+      IWorkbenchSiteProgressService siteps = (IWorkbenchSiteProgressService) getSite()
+          .getAdapter(IWorkbenchSiteProgressService.class);
+      siteps.showInDialog(getSite().getShell(), job);
+      job.schedule();
+
+    } else
+      // JDG2E: 1A- Schedule Job
+      // JDG2E: 1H1 Delay has value when chosen in UI
+      job.schedule(delayTime);
+  }
+
+  /**
+   * A simple example of and appropriate way to determine when a job ends and react 
+   * accordingly.  The use of a <code>UIJob</code> to touch a UI widget might be 
+   * more overhead, but it demonstrates how an <code>asyncExec</code> can be replaced
+   * by a <code>UIJob</code>.
+   */
+  private final class CancelJobListener extends JobChangeAdapter {
+    /**
+     * JDG2E: 1F9 Replaced this SWT action with UIJob
+     * This logic left intentionally to show what was replaced.
+     * 
+     * @see org.eclipse.core.runtime.jobs.IJobChangeListener#done(org.eclipse.core.runtime.jobs.IJobChangeEvent)
+     */
+    public void done(IJobChangeEvent event) {
+      //
+      //                  cancelJob.getDisplay().asyncExec(new Runnable() {
+      //
+      //                     public void run() {
+      //                        cancelJob.setEnabled(false);
+      //                     }
+      //                  });
+      //
+      UIJob uij = new UIJob("JobView: Tickle Cancel Button") {
+
+        public IStatus runInUIThread(IProgressMonitor monitor) {
+          if (!cancelJob.isDisposed())
+            cancelJob.setEnabled(false);
+          monitor.done();
+          return new Status(IStatus.OK, ConcurrencyPlugin.PLUGIN_ID,
+              IStatus.OK, "done", null);
+        }
+      };
+      uij.schedule();
+
+    }
+
+    /**
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.core.runtime.jobs.JobChangeAdapter#running(org.eclipse.core.runtime.jobs.IJobChangeEvent)
+     * 
+     * JDG2E: 1D2 Use job change listener enable Reschedule button
+     */
+    public void running(IJobChangeEvent event) {
+      UIJob uij = new UIJob("JobView: Tickle Reschedule Button") {
+
+        public IStatus runInUIThread(IProgressMonitor monitor) {
+          monitor.beginTask("Touch Reschedule Button", 100);
+          rescheduleJob.setEnabled(true);
+          monitor.worked(100);
+          monitor.done();
+          return new Status(IStatus.OK, ConcurrencyPlugin.PLUGIN_ID,
+              IStatus.OK, "done", null);
+        }
+      };
+      uij.schedule();
+    }
+  }
+
+  /**
+   * Setup job based on the Job Basics Tab in UI.
+   * 
+   * @param job
+   */
+  private void configureJobBasics(Job job) {
+
+    // JDG2E: 1B_ Set job priority
+    job.setPriority(jobPriority.getSelection());
+
+    // JDG2E: 1C_ Add Post Job Action
+    if (usePostJobAction.getSelection())
+      setupPostJobAction(job);
+
+    // JDG2E: 1C1 Add Job Change Listener (if requested)
+    if (addJobListener.getSelection()) {
+      job.addJobChangeListener(getCustomJCL());
+    }
+
+    // JDG2E: 2A Set system setting for Job
+    job.setSystem(systemJob.getSelection());
+
+    // JDG2E: 2B Set user setting for Job
+    job.setUser(userJob.getSelection());
+
+    //  JDG2E: 2AA Set restart setting for Job
+    if (!uiJob.getSelection())
+      if (selfStartJob.getSelection()) {
+        ((CustomJob) job).setRescheduleJob(true);
+        ((CustomJob) job)
+            .setRescheduleDelay(jobPriority.getSelection() * 1000);
+      } else
+        ((CustomJob) job).setRescheduleJob(false);
+
+  }
+
+  /**
+   * Create and associate a post-job action with a job.
+   * @param job
+   */
+  private void setupPostJobAction(final Job job) {
+
+    IAction gotoAction = new Action() {
+
+      public void run() {
+        // Say hello
+
+        MessageDialog.openInformation(getSite().getShell(),
+            "Hello from Action for " + job.getName(), "Job Result "
+                + job.getResult().getMessage());
+
+      }
+    };
+    gotoAction.setText("Job Done Message");
+    gotoAction.setDescription("Desc");
+    gotoAction.setToolTipText("tootip");
+    gotoAction.setEnabled(true);
+
+    job.setProperty(IProgressConstants.ACTION_PROPERTY, gotoAction);
+  }
+
+  /**
+   * Finds the one job event listener used by the view.
+   * @return a reference to the shared job listener.
+   */
+  private CustomJobListener getCustomJCL() {
+    CustomJobListener jcl = (CustomJobListener) ConcurrencyPlugin
+        .getDefault().getJCL();
+    jcl.setList(feedbackList);
+    return jcl;
+  }
+
+  /**
+   * Setup job based on the User Interaction Tab in UI. 
+   * 
+   * @param job
+   */
+  private void configureJobUserInteraction(Job job) {
+
+    // JDG2E: 2D3 Set progress group for Job (if any)
+    if (!noPM.getSelection()) {
+      job.setProgressGroup(getSharedProgressMonitor(), 100);
+      getSharedProgressMonitor().setTaskName(job.getName());
+    }
+
+    if (keepResult != keepNone)
+      job.setProperty(keepResult, Boolean.TRUE);
+
+    if (useCustomImage.getSelection()) {
+
+//      FIXED - removed deprecation
+//    	URL url = ConcurrencyPlugin.getDefault().find(
+//          new Path("icons/jdg2eProd.gif"));    	
+ 	  URL url = FileLocator.find(ConcurrencyPlugin.getDefault().getBundle(), new Path("icons/jdg2eProd.gif"), null);
+      ImageDescriptor id = ImageDescriptor.createFromURL(url);
+
+      job.setProperty(IProgressConstants.ICON_PROPERTY, id);
+
+      // * This logic left intentionally, can be used to have all jobs use
+      // * a common image at runtime.  See the belongsTo method in CustomJob.
+
+      //    URL url = ConcurrencyPlugin.getDefault().find(new
+      //      Path("icons/jdg2eProd.gif"));
+      //    ImageDescriptor id = ImageDescriptor.createFromURL(url);
+      //    job.setProperty(IProgressConstants.ICON_PROPERTY, id);
+
+      //    PlatformUI.getWorkbench()
+      //     .getProgressService().registerIconForFamily(id, job);
+    }
+
+  }
+
+  /**
+   * Setup job based on the Job Contention Tab in UI. 
+   * 
+   * @param job
+   */
+  private void configureJobContention(Job job) {
+
+    setupSchedulingRule(job);
+    setupJobLock(job);
+
+  }
+
+  /**
+   * Identify lock to be used by the job.
+   * 
+   * @param job
+   */
+  private void setupJobLock(Job job) {
+
+    if (uiJob.getSelection())
+      // JDG2E: 5A2a Selected lock assigned to job
+      ((CustomUIJob) job).setAccessLock(getLock());
+    else
+      // JDG2E: 5A2b Selected lock assigned to job
+      ((CustomJob) job).setAccessLock(getLock());
+  }
+
+  /**
+   * @return appropriate lock based on selection in user interface.
+   */
+  private ILock getLock() {
+    ILock lock = null;
+    if (useLockA.getSelection())
+      return lockA;
+    else if (useLockB.getSelection())
+      return lockB;
+    return lock;
+  }
+}

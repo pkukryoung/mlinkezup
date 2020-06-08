@@ -1,0 +1,9 @@
+<extensions> 
+ <tocOrder> 
+  <toc id = "/com.kdj.mlink.ezup/content/root.xhtml"/> 
+  <toc id = "/com.kdj.mlink.ezup/content/root.xhtml"/> 
+ </ tocOrder> 
+ <hidden> 
+  <toc id = "/com.kdj.mlink.ezup/content/root.xhtml"/> 
+ </ hidden> 
+</ extensions>
