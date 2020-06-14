@@ -1,0 +1,15 @@
+-------------------------------------------------------------------------------
+Test set: example.NewTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 2, Time elapsed: 1.147 sec <<< FAILURE!
+beforeTest(example.NewTest)  Time elapsed: 1.031 sec  <<< FAILURE!
+org.openqa.selenium.WebDriverException: Cannot find firefox binary in PATH. Make sure firefox is installed. OS appears to be: XP
+Build info: version: '2.45.0', revision: '5017cb8e7ca8e37638dc3091b2440b90a1d8686f', time: '2015-02-27 09:10:26'
+System info: host: 'DESKTOP-2VE8QTK', ip: '172.30.1.28', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
+Driver info: driver.version: FirefoxDriver
+	at org.openqa.selenium.firefox.internal.Executable.<init>(Executable.java:72)
+	at org.openqa.selenium.firefox.FirefoxBinary.<init>(FirefoxBinary.java:59)
+	at org.openqa.selenium.firefox.FirefoxBinary.<init>(FirefoxBinary.java:55)
+	at org.openqa.selenium.firefox.FirefoxDriver.<init>(FirefoxDriver.java:95)
+	at example.NewTest.beforeTest(NewTest.java:22)
+
