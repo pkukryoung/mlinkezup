@@ -171,3 +171,15 @@
    </extension>
       
 </plugin>
+<fragment
+   id="com.jumpstart.nls.example.helloworld.nl1"
+   name="NLS Example Plugin NL Support"
+   version="1.0.0"
+   provider-name="IBM"
+   plugin-id="com.jumpstart.nls.example"
+   plugin-version="1.0.0">
+<runtime>
+   <library name="nl1.jar" type="resource"/>
+   <library name="$nl$/"/>
+</runtime>
+</fragment>

@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Referenced Libraries"/>
+	<classpathentry kind="lib" path="C:/Users/KDJ001/eclipse-rcp-photon-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.preferences.nl1_3.2.0.v200606220026.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

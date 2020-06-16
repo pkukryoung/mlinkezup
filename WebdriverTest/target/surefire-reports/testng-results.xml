@@ -2,12 +2,12 @@
 <testng-results skipped="1" failed="0" ignored="0" total="1" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Suite" duration-ms="1201345" started-at="2020-06-12T13:42:54Z" finished-at="2020-06-12T14:02:55Z">
+  <suite name="Suite" duration-ms="275103" started-at="2020-06-14T05:56:08Z" finished-at="2020-06-14T06:00:43Z">
     <groups>
     </groups>
-    <test name="Test" duration-ms="1201345" started-at="2020-06-12T13:42:54Z" finished-at="2020-06-12T14:02:55Z">
+    <test name="Test" duration-ms="275103" started-at="2020-06-14T05:56:08Z" finished-at="2020-06-14T06:00:43Z">
       <class name="example.NewTest">
-        <test-method status="FAIL" signature="beforeTest()[pri:0, instance:example.NewTest@679b62af]" name="beforeTest" is-config="true" duration-ms="0" started-at="2020-06-12T22:42:54Z" finished-at="2020-06-12T22:42:54Z">
+        <test-method status="FAIL" signature="beforeTest()[pri:0, instance:example.NewTest@679b62af]" name="beforeTest" is-config="true" duration-ms="0" started-at="2020-06-14T14:56:08Z" finished-at="2020-06-14T14:56:08Z">
           <exception class="org.openqa.selenium.WebDriverException">
             <message>
               <![CDATA[Failed to connect to binary FirefoxBinary(C:\Program Files\Mozilla Firefox\firefox.exe) on port 7055; process output follows: 
@@ -20,7 +20,7 @@ JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't fin
 
 
 Build info: version: '2.45.0', revision: '5017cb8e7ca8e37638dc3091b2440b90a1d8686f', time: '2015-02-27 09:10:26'
-System info: host: 'DESKTOP-2VE8QTK', ip: '172.30.1.28', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
+System info: host: 'DESKTOP-2VE8QTK', ip: '192.168.137.1', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
 Driver info: driver.version: FirefoxDriver]]>
             </message>
             <full-stacktrace>
@@ -34,7 +34,7 @@ JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't fin
 
 
 Build info: version: '2.45.0', revision: '5017cb8e7ca8e37638dc3091b2440b90a1d8686f', time: '2015-02-27 09:10:26'
-System info: host: 'DESKTOP-2VE8QTK', ip: '172.30.1.28', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
+System info: host: 'DESKTOP-2VE8QTK', ip: '192.168.137.1', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
 Driver info: driver.version: FirefoxDriver
 	at org.openqa.selenium.firefox.internal.NewProfileExtensionConnection.start(NewProfileExtensionConnection.java:130)
 	at org.openqa.selenium.firefox.FirefoxDriver.startClient(FirefoxDriver.java:246)
@@ -93,7 +93,7 @@ JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't fin
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeTest -->
-        <test-method status="SKIP" signature="testEasy()[pri:0, instance:example.NewTest@679b62af]" name="testEasy" duration-ms="0" started-at="2020-06-12T23:02:55Z" finished-at="2020-06-12T23:02:55Z">
+        <test-method status="SKIP" signature="testEasy()[pri:0, instance:example.NewTest@679b62af]" name="testEasy" duration-ms="1" started-at="2020-06-14T15:00:43Z" finished-at="2020-06-14T15:00:43Z">
           <exception class="org.openqa.selenium.WebDriverException">
             <message>
               <![CDATA[Failed to connect to binary FirefoxBinary(C:\Program Files\Mozilla Firefox\firefox.exe) on port 7055; process output follows: 
@@ -106,7 +106,7 @@ JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't fin
 
 
 Build info: version: '2.45.0', revision: '5017cb8e7ca8e37638dc3091b2440b90a1d8686f', time: '2015-02-27 09:10:26'
-System info: host: 'DESKTOP-2VE8QTK', ip: '172.30.1.28', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
+System info: host: 'DESKTOP-2VE8QTK', ip: '192.168.137.1', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
 Driver info: driver.version: FirefoxDriver]]>
             </message>
             <full-stacktrace>
@@ -120,7 +120,7 @@ JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't fin
 
 
 Build info: version: '2.45.0', revision: '5017cb8e7ca8e37638dc3091b2440b90a1d8686f', time: '2015-02-27 09:10:26'
-System info: host: 'DESKTOP-2VE8QTK', ip: '172.30.1.28', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
+System info: host: 'DESKTOP-2VE8QTK', ip: '192.168.137.1', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_212'
 Driver info: driver.version: FirefoxDriver
 	at org.openqa.selenium.firefox.internal.NewProfileExtensionConnection.start(NewProfileExtensionConnection.java:130)
 	at org.openqa.selenium.firefox.FirefoxDriver.startClient(FirefoxDriver.java:246)
@@ -179,7 +179,7 @@ JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't fin
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testEasy -->
-        <test-method status="SKIP" signature="afterTest()[pri:0, instance:example.NewTest@679b62af]" name="afterTest" is-config="true" duration-ms="0" started-at="2020-06-12T23:02:55Z" finished-at="2020-06-12T23:02:55Z">
+        <test-method status="SKIP" signature="afterTest()[pri:0, instance:example.NewTest@679b62af]" name="afterTest" is-config="true" duration-ms="0" started-at="2020-06-14T15:00:43Z" finished-at="2020-06-14T15:00:43Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterTest -->

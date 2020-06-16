@@ -1,0 +1,117 @@
+package com.kdj.mlink.ezup.concurrency.jobs;
+
+/*
+ * "The Java Developer's Guide to Eclipse" by D'Anjou, Fairbrother, Kehn,
+ * Kellerman, McCarthy
+ * 
+ * (C) Copyright International Business Machines Corporation, 2003, 2004. All
+ * Rights Reserved.
+ * 
+ * Code or samples provided herein are provided without warranty of any kind.
+ */
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.jobs.ILock;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.ui.progress.UIJob;
+
+import com.kdj.mlink.ezup.concurrency.TraceUtility;
+
+/**
+ * An implementation of UIJob processing that is used to demonstrate the function and 
+ * capability of a job that runs on the UI thread using the Eclipse job framework. 
+ */
+public class CustomUIJob extends UIJob {
+
+  private static final int MAIN_TASK_VALUE = 3000;
+  private static final int SUB_TASK_VALUE = 1500;
+
+  private boolean fail = false;
+  private ILock accessLock = null;
+
+  /**
+   * @param name
+   */
+  public CustomUIJob(String name) {
+    super(name);
+  }
+
+  /**
+   * @param name
+   * @param fail
+   */
+  // JDG2E: 1F2 CustomUIJob - values passed to customize logic
+  public CustomUIJob(String name, boolean fail) {
+    super(name);
+    this.fail = fail;
+  }
+
+  /**
+   * Performs requested processing on the UI thread.
+   *  
+   * JDG2E: 1F3 CustomUIJob - runInUIThread method contains logic
+   * @see org.eclipse.ui.progress.UIJob#runInUIThread(org.eclipse.core.runtime.IProgressMonitor)
+   */
+  public IStatus runInUIThread(IProgressMonitor monitor) {
+    setName(getName() + " : " + Thread.currentThread());
+
+    printJobDetails(this, monitor);
+
+    if (fail)
+      throw new RuntimeException();
+
+    if (accessLock != null) {
+      accessLock.acquire();
+      TraceUtility.traceMsg(TraceUtility.LOCK, this.getName(),
+          "Using Lock: " + accessLock);
+    }
+
+    monitor.beginTask("Task: " + getName(), MAIN_TASK_VALUE);
+
+    SubProgressMonitor subMonitor = new SubProgressMonitor(monitor,
+        SUB_TASK_VALUE);
+
+    CustomJobWork.doWork(subMonitor, getName(), TraceUtility.UIJOB,
+        CustomJobWork.PASS1);
+
+    subMonitor = new SubProgressMonitor(monitor, SUB_TASK_VALUE);
+
+    CustomJobWork.doWork(subMonitor, getName(), TraceUtility.UIJOB,
+        CustomJobWork.PASS1);
+
+    if (accessLock != null)
+      accessLock.release();
+
+    monitor.done();
+    return Status.OK_STATUS;
+
+  }
+
+  /**
+   * @param accessLock
+   *          The accessLock to set.
+   */
+  public void setAccessLock(ILock accessLock) {
+    this.accessLock = accessLock;
+  }
+
+  /**
+   * Sends job details to the trace point.
+   * 
+   * @param aJob
+   * @param aMonitor
+   */
+  protected void printJobDetails(Job aJob, IProgressMonitor aMonitor) {
+
+    TraceUtility.traceMsg(TraceUtility.JOB, aJob.getName(),
+        "Job Details: " + "\n\t\tState:"
+            + CustomJobWork.getStateValue(this) + " Job Priority: "
+            + aJob.getPriority() + "\n\t\tThread: "
+            + Thread.currentThread() + " at priority: "
+            + Thread.currentThread().getPriority() + "\n\t\tMonitor: "
+            + aMonitor);
+  }
+}
