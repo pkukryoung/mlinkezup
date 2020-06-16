@@ -1,9 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core
-Bundle-SymbolicName: com.mlink.core
+Bundle-SymbolicName: com.mlink.common
 Bundle-Version: 0.0.1
 Bundle-Vendor: MLINK
 Automatic-Module-Name: com.mlink.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.swt;bundle-version="3.107.0"
+Require-Bundle: org.eclipse.swt,
+ org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.eclipse.wb.swt,
+ org.apache.commons.codec,
+ org.eclipse.ui

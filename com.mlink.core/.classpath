@@ -18,5 +18,13 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/excel/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/excel/poi-3.8-20120326.jar"/>
+	<classpathentry kind="lib" path="lib/excel/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/shedule/slf4j-api-1.7.30.jar"/>
+	<classpathentry kind="lib" path="lib/sftp/jsch-0.1.55.jar"/>
+	<classpathentry kind="lib" path="lib/db/commons-dbcp2-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/db/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/db/commons-pool2-2.6.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
